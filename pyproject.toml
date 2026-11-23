@@ -1,0 +1,74 @@
+[project]
+name = "modular_mobile_manipulation"
+version = "0.1.0"
+description = "Robot‑agnostic mobile manipulation framework with LLM planning and behavior trees"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx",
+    "numpy<2",
+    "open3d>=0.19.0",
+    "pcl>=0.0.0.post1",
+    "py_trees",
+    "pydantic",
+    "PyYAML>=6.0",
+    "pytest>=9.0.3",
+    "requests>=2.34.2",
+    "uv",
+]
+
+[project.entry-points."mm.actions"]
+MoveToPose = "src.plugin.actions.navigation:MoveToPose"
+MoveToTarget = "src.plugin.actions.navigation:MoveToTarget"
+MoveToManipulationPose = "src.plugin.actions.navigation:MoveToManipulationPose"
+GraspObjectAction = "src.plugin.actions.manipulation:GraspObjectAction"
+ReleaseObjectAction = "src.plugin.actions.manipulation:ReleaseObjectAction"
+MoveArmToState = "src.plugin.actions.manipulation:MoveArmToState"
+PickTarget = "src.plugin.actions.manipulation:PickTarget"
+PickAtPose = "src.plugin.actions.manipulation:PickAtPose"
+PlaceAtPose = "src.plugin.actions.manipulation:PlaceAtPose"
+ObserveScene = "src.plugin.actions.observe:ObserveScene"
+ScanScene = "src.plugin.actions.observe:ScanScene"
+DescribeScene = "src.plugin.actions.observe:DescribeScene"
+InspectScene = "src.plugin.actions.inspect:InspectScene"
+MoveHeadToPanTilt = "src.plugin.actions.head:MoveHeadToPanTilt"
+MoveHeadToState = "src.plugin.actions.head:MoveHeadToState"
+EstimatePickPose = "src.plugin.actions.estimate_pick_pose:EstimatePickPose"
+EstimatePickPoseRos2Service = "src.plugin.actions.estimate_pick_pose_ros2:EstimatePickPoseRos2Service"
+DumpPcdForGgx = "src.plugin.actions.dump_pcd_for_ggx:DumpPcdForGgx"
+EstimatePickPoseGgx = "src.plugin.actions.estimate_pick_pose_ggx:EstimatePickPoseGgx"
+AskUser = "src.plugin.actions.user_input:AskUser"
+FetchObject = "src.plugin.actions.fetch:FetchObject"
+PlanHsrPickup = "src.plugin.actions.hsr_pickup:PlanHsrPickup"
+HsrPickup = "src.plugin.actions.hsr_pickup:HsrPickup"
+ExecuteJointTrajectory = "src.plugin.actions.trajectory:ExecuteJointTrajectory"
+
+[project.entry-points."mm.controllers"]
+nav2 = "src.plugin.controllers.nav2:Nav2Controller"
+moveit = "src.plugin.controllers.moveit:MoveItArmController"
+moveit_arm = "src.plugin.controllers.moveit:MoveItArmController"
+moveit_head = "src.plugin.controllers.moveit:MoveItHeadController"
+moveit_gripper = "src.plugin.controllers.moveit:MoveItGripperController"
+hsr_gripper = "src.plugin.controllers.moveit:MoveItGripperController"
+hsrb_nav = "src.plugin.controllers.hsrb_nav:HsrbNavController"
+hsrb_arm = "src.plugin.controllers.hsrb_arm:HsrbArmController"
+hsrb_head = "src.plugin.controllers.hsrb_head:HsrbHeadController"
+hsrb_gripper = "src.plugin.controllers.hsrb_gripper:HsrbGripperController"
+ros2_control = "src.plugin.controllers.ros2_control_trajectory:Ros2ControlController"
+ros2control = "src.plugin.controllers.ros2_control_trajectory:Ros2ControlController"
+
+[project.entry-points."mm.planners"]
+curobo = "src.plugin.planners.curobo_planner:CuroboManipulationPlanner"
+moveit = "src.plugin.planners.moveit_planner:MoveItManipulationPlanner"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+markers = [
+    "requires_ros2: tests that need ROS 2 Python bindings",
+]

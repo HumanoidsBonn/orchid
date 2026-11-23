@@ -1,0 +1,57 @@
+.session-state/
+.claude/settings.json
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+.env.manifest
+config/curobo/generated/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+*.puml
+
+# Testing
+.pytest_cache/
+.docker_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+claude_context.txt  
+#gpd/
+#gpd_ros2                
+hsr/
+hsrb_interfaces/   
+artifacts/ 
+make_pdf.py                        
+test-results.txt    
+todo.md             
+uv.lock
+install/
+log/

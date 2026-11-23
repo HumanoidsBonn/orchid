@@ -1,0 +1,480 @@
+{
+  "robot_id": "hsrb_bot",
+  "robot_type": "mobile_manipulation",
+  "capabilities": [
+    "MoveToPose",
+    "MoveToTarget",
+    "MoveBaseWithWholeBody",
+    "GraspObjectAction",
+    "ReleaseObjectAction",
+    "MoveArmToState",
+    "PlaceAtPose",
+    "ObserveScene",
+    "PlanHsrPickup",
+    "ScanScene",
+    "InspectScene",
+    "MoveHeadToPanTilt",
+    "MoveHeadToState",
+    "EstimateSimpleCylindricalGrasp",
+    "EstimateSimplePcaGrasp",
+    "OmniBaseServoToPose",
+    "PickTargetWithGraspAlignment",
+    "HsrPickup",
+    "FetchObject",
+    "AskUser"
+  ],
+  "controllers": {
+    "nav": "nav2",
+    "arm": "moveit",
+    "head": "moveit_head",
+    "gripper": "hsrb_gripper"
+  },
+  "planners": {
+    "manipulation": "moveit",
+    "default": "moveit"
+  },
+  "hardware": {
+    "planners": {
+      "curobo": {
+        "robot_config": "/home/orchid/orchid_server/config/curobo/generated/hsrc_robot_arm_with_body_collision.yml",
+        "robot_config_profile": "arm_with_body_collision",
+        "world_config_source": "world_state",
+        "cuda_version": "12.8",
+        "metrics_self_collision_enabled": true,
+        "debug_dir": "/tmp/orchid_debug/curobo",
+        "debug_json_enabled": true
+      },
+      "moveit": {
+        "group_name": "whole_body_weighted",
+        "ee_link": "hand_palm_link",
+        "frame_id": "base_footprint",
+        "ik_module": "moveit_compute_ik",
+        "ik_service": "/compute_ik",
+        "fk_module": "moveit_compute_fk",
+        "fk_service": "/compute_fk",
+        "cartesian_module": "moveit_compute_cartesian_path",
+        "cartesian_service": "/compute_cartesian_path",
+        "planning_scene_module": "moveit_get_planning_scene",
+        "move_group_action": "/move_action",
+        "pipeline_id": "move_group",
+        "ik_timeout_s": 3.5,
+        "fk_timeout_s": 5.0,
+        "allowed_planning_time": 5.0,
+        "planning_attempts": 10,
+        "max_velocity_scaling_factor": 0.4,
+        "max_acceleration_scaling_factor": 0.4,
+        "start_state_complete": true,
+        "workspace": {
+          "frame_id": "base_link",
+          "min_corner": [-1.0, -1.0, -1.0],
+          "max_corner": [1.0, 1.0, 1.0]
+        },
+        "goal_position_tolerance": 0.01,
+        "goal_orientation_tolerance": 0.05,
+        "base_joint_names": ["odom_x", "odom_y", "odom_t"],
+        "base_drift_tolerance": {
+          "x": 1.3,
+          "y": 1.3,
+          "yaw": 1.5
+        },
+        "collision_relaxation_links": [
+          "hand_palm_link",
+          "hand_l_distal_link",
+          "hand_l_spring_proximal_link",
+          "hand_r_distal_link",
+          "hand_r_spring_proximal_link",
+          "wrist_roll_link"
+        ],
+        "collision_relaxation_objects": [
+          "pick_target_collision"
+        ],
+        "persistent_octomap_collision_links": [
+          "base_l_drive_wheel_link",
+          "base_r_drive_wheel_link",
+          "base_l_passive_wheel_z_link",
+          "base_r_passive_wheel_z_link"
+        ],
+        "persistent_octomap_collision_object": "<octomap>",
+        "base_link_frame": "base_link",
+        "planning_frame": "map"
+      }
+    },
+    "nav": {
+      "name": "omni_base",
+      "action_name": "navigate_to_pose",
+      "frame_id": "map",
+      "xy_goal_tolerance": 0.1,
+      "yaw_goal_tolerance": 0.2
+    },
+    "manipulation": {
+      "object_pose_ttl_s": 10.0,
+      "local_costmap_sensor": "local_costmap",
+      "map_sensor": "map",
+      "footprint_sensor": "local_footprint",
+      "robot_radius": 0.35,
+      "occupied_threshold": 100,
+      "footprint_inflation_m": 0.02,
+      "near_goal_radius_m": 0.12,
+      "near_goal_occupied_threshold": 100,
+      "unknown_is_blocked": false,
+      "nav_feasibility_missing_policy": "reject",
+      "robot_distance_weight": 0.25,
+      "robot_yaw_change_weight": 0.1,
+      "base_drift_weight": 1.0,
+      "base_yaw_drift_weight": 0.25,
+      "costmap_timeout_s": 2.0,
+      "reach_clearance_m": 0.06,
+      "reach_position_tolerance_m": 0.1,
+      "object_height_guess_m": 0.12,
+      "candidate_marker_topic": "/orchid/manipulation_base_candidates"
+    },
+    "arm": {
+      "name": "whole_body",
+      "execution_backend": "ros2_control",
+      "planning_backend": "hsrb_interface_plan_only",
+      "trajectory_duration_s": 3.0,
+      "named_target_tolerance": 0.03,
+      "whole_body_base_path_tolerance_retries": 1,
+      "whole_body_base_retry_delay_s": 0.25,
+      "collision_relaxation_links": [
+          "hand_palm_link",
+          "hand_l_distal_link",
+          "hand_l_spring_proximal_link",
+          "hand_r_distal_link",
+          "hand_r_spring_proximal_link",
+          "wrist_roll_link"
+        ],
+      "ros2_control": {
+        "dispatch_mode": "synchronized",
+        "time_scale": 1.0,
+        "velocity_scale": 1.0,
+        "acceleration_scale": 1.0,
+        "controllers": [
+          {
+            "name": "arm",
+            "action": "/arm_trajectory_controller/follow_joint_trajectory",
+            "joints": [
+              "arm_lift_joint",
+              "arm_flex_joint",
+              "arm_roll_joint",
+              "wrist_flex_joint",
+              "wrist_roll_joint"
+            ]
+          },
+          {
+            "name": "head",
+            "action": "/head_trajectory_controller/follow_joint_trajectory",
+            "joints": [
+              "head_pan_joint",
+              "head_tilt_joint"
+            ]
+          },
+          {
+            "name": "omni_base",
+            "action": "/omni_base_controller/follow_joint_trajectory",
+            "joints": [
+              "odom_x",
+              "odom_y",
+              "odom_t"
+            ],
+            "group_type": "base_trajectory",
+            "time_scale": 1.0,
+            "velocity_scale": 0.2,
+            "acceleration_scale": 0.2
+          }
+        ]
+      },
+      "named_targets": {
+        "neutral": {
+          "type": "joint_positions",
+          "joints": {
+            "arm_lift_joint": 0.0,
+            "arm_flex_joint": 0.0,
+            "arm_roll_joint": 0.0,
+            "wrist_flex_joint": -1.57,
+            "wrist_roll_joint": 0.0
+          }
+        },
+        "go": {
+          "type": "joint_positions",
+          "joints": {
+            "arm_lift_joint": 0.0,
+            "arm_flex_joint": -0.1,
+            "arm_roll_joint": -1.57,
+            "wrist_flex_joint": -1.57,
+            "wrist_roll_joint": 0.0
+          }
+        },
+        "observe": {
+          "type": "joint_positions",
+          "joints": {
+            "arm_lift_joint": 0.0,
+            "arm_flex_joint": 0.0,
+            "arm_roll_joint": -1.57,
+            "wrist_flex_joint": -1.57,
+            "wrist_roll_joint": 0.0,
+            "head_tilt_joint": -0.35,
+            "head_pan_joint": 0.0
+          }
+        },
+        "retract": {
+          "type": "joint_positions",
+          "joints": {
+            "arm_lift_joint": 0.0,
+            "arm_flex_joint": -0.1,
+            "arm_roll_joint": 0.0,
+            "wrist_flex_joint": -1.57,
+            "wrist_roll_joint": 0.0
+          }
+        }
+      }
+    },
+    "head": {
+      "move_group": "head",
+      "name": "whole_body",
+      "execution_backend": "ros2_control",
+      "action_name": "/move_action",
+      "pan_joint": "head_pan_joint",
+      "tilt_joint": "head_tilt_joint",
+      "named_targets": {
+        "center": {
+          "type": "joint_positions",
+          "joints": {
+            "head_pan_joint": 0.0,
+            "head_tilt_joint": -0.35
+          }
+        },
+        "down": {
+          "type": "joint_positions",
+          "joints": {
+            "head_pan_joint": 0.0,
+            "head_tilt_joint": -0.85
+          }
+        },
+        "left": {
+          "type": "joint_positions",
+          "joints": {
+            "head_pan_joint": 0.45,
+            "head_tilt_joint": -0.35
+          }
+        },
+        "right": {
+          "type": "joint_positions",
+          "joints": {
+            "head_pan_joint": -0.45,
+            "head_tilt_joint": -0.35
+          }
+        }
+      }
+    },
+    "gripper": {
+      "move_group": "gripper",
+      "action_name": "/move_action",
+      "joint_name": "hand_motor_joint",
+      "min_width": 0.0,
+      "max_width": 0.15,
+      "min_position": 0.0,
+      "max_position": 1.0,
+      "open_distance": 0.10,
+      "closed_distance": 0.02
+    },
+    "base": "base_footprint",
+    "odom": "odom",
+    "map": "map",
+    "sensors": {
+      "head_camera_rgb": "/remote/head_rgbd_sensor/rgb/image_rect_color",
+      "head_camera_depth": "/remote/head_rgbd_sensor/depth_registered/image_rect_raw",
+      "head_camera_info": "/head_rgbd_sensor/rgb/camera_info",
+      "head_pointcloud": "/remote/head_rgbd_sensor/depth_registered/rectified_points",
+      "local_costmap": "/local_costmap/costmap",
+      "map": "/map",
+      "local_footprint": "/local_costmap/published_footprint",
+      "lidar_scan": "/scan",
+      "imu_data": "/imu/data",
+      "odom": "/odom",
+      "joint_states": "/whole_body_moveit/joint_states"
+    }
+  },
+  "modules": [
+    {
+      "name": "moveit_compute_ik",
+      "endpoint": "/compute_ik",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "moveit_msgs.srv:GetPositionIK",
+        "timeout": 5
+      }
+    },
+    {
+      "name": "moveit_compute_fk",
+      "endpoint": "/compute_fk",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "moveit_msgs.srv:GetPositionFK",
+        "timeout": 5
+      }
+    },
+    {
+      "name": "moveit_compute_cartesian_path",
+      "endpoint": "/compute_cartesian_path",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "moveit_msgs.srv:GetCartesianPath",
+        "timeout": 6
+      }
+    },
+    {
+      "name": "moveit_check_state_validity",
+      "endpoint": "/check_state_validity",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "moveit_msgs.srv:GetStateValidity",
+        "timeout": 3
+      }
+    },
+    {
+      "name": "moveit_get_planning_scene",
+      "endpoint": "/get_planning_scene",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "moveit_msgs.srv:GetPlanningScene",
+        "timeout": 2
+      }
+    },
+    {
+      "name": "moveit_clear_octomap",
+      "endpoint": "/clear_octomap",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "std_srvs.srv:Empty",
+        "timeout": 2
+      }
+    },
+    {
+      "name": "tmc_solve_ik_with_collision",
+      "endpoint": "/solve_ik_with_collision",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "tmc_common_msgs.srv:SolveIkWithCollision",
+        "timeout": 5
+      }
+    },
+    {
+      "name": "gpd",
+      "endpoint": "http://127.0.0.1:5000/predict",
+      "type": "http",
+      "config": {
+        "timeout": 120
+      }
+    },
+    {
+      "name": "gpd_ros2_service",
+      "endpoint": "detect_constrained_grasps",
+      "type": "ros2_service",
+      "config": {
+        "service_type": "gpd_ros2_msgs.srv:DetectConstrainedGrasps",
+        "timeout": 120
+      }
+    },
+    {
+      "name": "ggx_http",
+      "endpoint": "http://131.220.7.198:5002/ggx_output",
+      "type": "http",
+      "config": {
+        "timeout": 120
+      }
+    },
+    {
+      "name": "planner_llm",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "type": "llm",
+      "config": {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "max_tokens": 2048
+      }
+    },
+    {
+      "name": "deepseek_vlm",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "type": "llm",
+      "config": {
+        "provider": "deepseek",
+        "model": "deepseek-v4-flash-vision-exp",
+        "api_key_env": "DEEPSEEK_API_KEY",
+        "max_tokens": 32768,
+        "extra_body": {
+          "response_format": {"type": "json_object"},
+          "thinking": {"type": "enabled"},
+          "reasoning_effort": "low"
+        }
+      }
+    },
+    {
+      "name": "planner_llm_or",
+      "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+      "type": "llm",
+      "config": {
+        "provider": "openrouter",
+        "model": "openrouter/free",
+        "api_key_env": "OPENROUTER_API_KEY",
+        "max_tokens": 2048
+      }
+    },
+    {
+      "name": "gemma4_vlm",
+      "endpoint": "http://127.0.0.1:11434/v1/chat/completions",
+      "type": "llm",
+      "config": {
+        "protocol": "openai_chat",
+        "provider": "ollama",
+        "model": "gemma4:e4b",
+        "options": {
+            "temperature": 1.0,
+            "top_p": 0.95,
+            "top_k": 64
+        }
+      }
+    },
+    {
+      "name": "sam3",
+      "endpoint": "http://127.0.0.1:8005/v1/chat/completions",
+      "type": "http",
+      "config": {
+        "protocol": "openai_chat",
+        "provider": "ollama",
+        "model": "sam3",
+        "options": {
+            "temperature": 1.0,
+            "top_p": 0.95,
+            "top_k": 64
+        }
+      }
+    },
+    {
+      "name": "planner_llm_oroai",
+      "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+      "type": "llm",
+      "config": {
+        "provider": "openrouter",
+        "model": "freerouter:free",
+        "api_key_env": "OPENROUTER_API_KEY",
+        "max_tokens": 2048
+      }
+    },
+    {
+      "name": "planner_llm_local",
+      "endpoint": "http://192.168.1.50:11434/v1/chat/completions",
+      "type": "http",
+      "config": {
+        "protocol": "openai_chat",
+        "provider": "ollama",
+        "model": "llama3.2"
+      }
+    },
+    {"name": "slam", "endpoint": "http://slam:8080", "type": "http"},
+    {"name": "weather", "endpoint": "https://api.weather.com", "type": "http"},
+    {"name": "battery_monitor", "endpoint": "/dom/battery", "type": "ros2_topic"}
+  ]
+}

@@ -1,0 +1,47 @@
+static_furniture:
+  - armchair
+  - bench
+  - bookcase
+  - cabinet
+  - chair
+  - coffee_table
+  - couch
+  - desk
+  - dishwasher
+  - drawer
+  - file_cabinet
+  - kitchen_counter
+  - oven
+  - ottoman
+  - refrigerator
+  - shelf
+  - sink
+  - sofa
+  - stool
+  - stove
+  - table
+  - work_desk
+  - sofa_chair
+  - kitchen_cabinet
+
+null_classes:
+  - air_conditioner
+  - bulletin_board
+  - ceiling
+  - clock
+  - coatrack
+  - curtain
+  - door
+  - faucet
+  - fire_extinguisher
+  - floor
+  - painting
+  - pillar
+  - radiator
+  - trash_can
+  - wall
+  - whiteboard
+  - window
+
+max_vertical_gap: 0.15
+min_xy_overlap: 0.25

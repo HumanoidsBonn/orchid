@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>orchid_moveit_config</name>
+  <version>0.1.0</version>
+  <description>Orchid wrapper launch package for the installed HSR-C MoveIt configuration.</description>
+  <maintainer email="orchid@example.com">Orchid</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>hsrc_description</exec_depend>
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,56 @@
+depth_to_filtered_pointcloud:
+  ros__parameters:
+
+    # Topics
+    # depth_topic: /remote/head_rgbd_sensor/depth_registered/image_rect_raw
+    depth_topic: /rem/head_rgbd_sensor/depth_registered/image_rect_raw
+    camera_info_topic: /head_rgbd_sensor/depth_registered/camera_info
+    output_topic: /filtered_depth_cloud
+
+    # Output/reference frame
+    base_frame: base_link
+
+    # Depth range [m]
+    min_depth: 0.20
+    max_depth: 5.0
+
+    # ROI expressed IN base_link
+    min_x: -0.5
+    max_x: 5.0
+
+    min_y: -5.0
+    max_y: 5.0
+
+    min_z: 0.2
+    max_z: 1.8
+
+    # Initial downsampling
+    # 1 = every pixel
+    # 2 = every second pixel
+    pixel_stride: 2
+
+    # Point cloud voxel size [m]
+    voxel_size: 0.015
+
+    # Depth image median filtering
+    median_filter_enable: true
+    median_kernel: 3
+
+    # Reject depth discontinuities > 5 cm
+    # Set <= 0 to disable
+    depth_edge_threshold: 0.05
+
+    # Statistical Outlier Removal
+    sor_enable: true
+    sor_neighbors: 15
+    sor_std_ratio: 1.5
+
+    # Radius Outlier Removal
+    radius_filter_enable: false
+    radius_neighbors: 5
+    radius: 0.03
+
+    # TF handling
+    tf_queue_size: 10
+    tf_message_timeout: 0.5
+    tf_check_period: 0.01

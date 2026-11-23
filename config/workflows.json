@@ -1,0 +1,11 @@
+{
+  "enabled": ["release", "close_gripper", "home", "fetch"],
+  "extra_search_locations": 5,
+  "include_scene_items": false,
+  "items": [
+    {"id": "pringles_can", "label": "Pringles can", "query": "red pringles cylinder"},
+    {"id": "milk_carton", "label": "Milk carton", "query": "blue-white milk carton"},
+    {"id": "cardboard_food_box", "label": "Food box", "query": "blue cardboard box"},
+    {"id": "coffee_mug", "label": "Coffee mug", "query": "coffee mug"}
+  ]
+}

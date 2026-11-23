@@ -1,0 +1,250 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Fixed Frame: odom
+    Background Color: 35; 35; 35
+    Frame Rate: 20
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Ground
+      Enabled: true
+      Cell Size: 0.5
+      Plane Cell Count: 20
+    - Class: rviz_default_plugins/RobotModel
+      Name: Measured robot
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+        Durability Policy: Transient Local
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Base-only candidates and paths
+      Enabled: true
+      Topic:
+        Value: /orchid/hsr_pickup/base_only/markers
+        Durability Policy: Transient Local
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Arm-only candidates and paths
+      Enabled: true
+      Topic:
+        Value: /orchid/hsr_pickup/arm_only/markers
+        Durability Policy: Transient Local
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Coordinated candidates and paths
+      Enabled: true
+      Topic:
+        Value: /orchid/hsr_pickup/coordinated/markers
+        Durability Policy: Transient Local
+    - Class: moveit_rviz_plugin/RobotState
+      Name: Base-only first candidate
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/base_only/candidate_0
+        Durability Policy: Transient Local
+      Robot Alpha: 0.35
+    - Class: moveit_rviz_plugin/RobotState
+      Name: Arm-only first candidate
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/arm_only/candidate_0
+        Durability Policy: Transient Local
+      Robot Alpha: 0.35
+    - Class: moveit_rviz_plugin/RobotState
+      Name: Coordinated first candidate
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/coordinated/candidate_0
+        Durability Policy: Transient Local
+      Robot Alpha: 0.35
+    - Class: moveit_rviz_plugin/RobotState
+      Name: Base-only failure state
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/base_only/failure_state
+        Durability Policy: Transient Local
+      Robot Alpha: 0.65
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: Base-only insertion
+      Enabled: true
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/base_only/insertion
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: Arm-only insertion
+      Enabled: true
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/arm_only/insertion
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: Coordinated insertion
+      Enabled: true
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/coordinated/insertion
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Auto planning failures
+      Enabled: true
+      Topic:
+        Value: /orchid/hsr_pickup/auto/markers
+        Durability Policy: Transient Local
+    - Class: moveit_rviz_plugin/RobotState
+      Name: auto failure state
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/auto/failure_state
+        Durability Policy: Transient Local
+      Robot Alpha: 0.65
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: base_only staging plan
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/base_only/staging
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: base_only lift preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/base_only/lift
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: base_only undock preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/base_only/undock
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: base_only go preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/base_only/go
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/RobotState
+      Name: arm_only failure state
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/arm_only/failure_state
+        Durability Policy: Transient Local
+      Robot Alpha: 0.65
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: arm_only staging plan
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/arm_only/staging
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: arm_only lift preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/arm_only/lift
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: arm_only undock preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/arm_only/undock
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: arm_only go preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/arm_only/go
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/RobotState
+      Name: coordinated failure state
+      Enabled: true
+      Robot Description: robot_description
+      Robot State Topic:
+        Value: /orchid/hsr_pickup/coordinated/failure_state
+        Durability Policy: Transient Local
+      Robot Alpha: 0.65
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: coordinated staging plan
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/coordinated/staging
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: coordinated lift preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/coordinated/lift
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: coordinated undock preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/coordinated/undock
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+    - Class: moveit_rviz_plugin/Trajectory
+      Name: coordinated go preview
+      Enabled: false
+      Robot Description: robot_description
+      Trajectory Topic:
+        Value: /orchid/hsr_pickup/coordinated/go
+        Durability Policy: Transient Local
+      Loop Animation: true
+      Robot Alpha: 0.5
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 3
+      Focal Point:
+        X: 1
+        Y: 1
+        Z: 0.7
+      Pitch: 0.4
+      Yaw: 0.8
+Window Geometry:
+  Width: 1400
+  Height: 900
