@@ -1,0 +1,8 @@
+string workflow_id
+string inputs_json
+---
+bool success
+string result_message
+---
+string current_action
+float32 percent_completed

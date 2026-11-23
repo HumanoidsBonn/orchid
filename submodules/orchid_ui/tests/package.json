@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "scripts": {"test:workflows": "node workflow_browser.cjs", "test:availability": "node availability_style_browser.cjs", "test:browser": "node two_page_browser.cjs", "test:soak": "node two_page_browser.cjs --soak"},
+  "devDependencies": {"playwright": "1.51.1", "esbuild": "0.25.0"}
+}

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  orchid-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: orchid-ui:latest
+    container_name: orchid_ui
+    init: true
+    network_mode: host
+    ipc: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XAUTHORITY=${XAUTHORITY:-/tmp/.Xauthority}
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-5}
+      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}
+      - CYCLONEDDS_URI=/home/orchid/cyclonedds.xml
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-/tmp/.Xauthority}:${XAUTHORITY:-/tmp/.Xauthority}:rw
+      - ./cyclonedds.xml:/home/orchid/cyclonedds.xml:ro
+      - ../.:/home/orchid/orchid_ui
+    restart: unless-stopped
+    devices:
+      - /dev/dri:/dev/dri
+    runtime: nvidia
+    stdin_open: true
+    tty: true
+    command: /home/orchid/orchid_ui/run_dashboard.sh

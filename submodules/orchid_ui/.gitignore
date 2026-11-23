@@ -1,0 +1,15 @@
+/target/
+/tests/node_modules/
+/tests/.baseline/
+/scripts/__pycache__/
+/tests/__pycache__/
+
+*/install
+*/build
+*/log
+/artifacts
+
+/.vscode
+
+*.lock
+

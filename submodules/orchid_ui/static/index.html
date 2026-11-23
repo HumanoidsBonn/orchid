@@ -1,0 +1,212 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Orchid</title><link rel="stylesheet" href="vendor/fontawesome/css/all.min.css"><link rel="stylesheet" href="style.css?v=20261108d"></head>
+<body data-page="map">
+<header class="top-ribbon">
+<a class="orchid-brand" href="#map" aria-label="Orchid dashboard"><span class="brand-emblem"><i class="fa-solid fa-robot" aria-hidden="true"></i></span><span class="brand-wordmark">ORCHID<small>HRI</small></span></a>
+<nav class="page-nav" aria-label="Dashboard pages"><a href="#map" id="page-map" title="Map" aria-label="Map"><i class="fa-solid fa-map" aria-hidden="true"></i></a><a href="#tree" id="page-tree" title="Behaviour Tree" aria-label="Behaviour Tree"><i class="fa-solid fa-sitemap" aria-hidden="true"></i></a><a href="#tasks" id="page-tasks" title="Tasks" aria-label="Tasks"><i class="fa-solid fa-list-check" aria-hidden="true"></i></a></nav>
+<div class="robot-summary"><strong id="lbl-robot-status">Unavailable</strong><button id="ribbon-task" type="button" title="Current task">Idle</button></div>
+<div id="battery-item" class="battery-mini" aria-label="Battery data unavailable"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#374151" stroke-width="3"/><circle id="battery-ring" cx="22" cy="22" r="18" fill="none" stroke="#10b981" stroke-width="3"/></svg><span id="lbl-battery">/</span><span id="lbl-battery-status" hidden>No data</span></div>
+<div class="ribbon-connection"><div id="conn-status" class="status-badge disconnected"><span class="badge-dot"></span><span class="badge-text">Disconnected</span></div><button id="btn-connect" class="btn btn-primary" title="Connect" aria-label="Connect"><i class="fa-solid fa-plug" aria-hidden="true"></i><span class="connect-label">Connect</span></button><button id="btn-theme-toggle" class="btn btn-icon" title="Toggle theme" aria-label="Toggle theme"><i class="fa-solid fa-moon"></i></button><button id="btn-toggle-speech" class="btn btn-icon" title="Mute robot speech" aria-label="Mute robot speech"><i class="fa-solid fa-volume-high" aria-hidden="true"></i></button></div>
+<button id="btn-toggle-settings" class="btn btn-icon" aria-label="Settings"><i class="fa-solid fa-bars"></i></button>
+<span id="lbl-task-time" hidden></span><span id="lbl-current-action-time" hidden></span><span id="lbl-current-action-name" hidden></span>
+</header>
+<div id="settings-sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Settings</h3>
+            <button id="btn-close-sidebar" class="btn-close">&times;</button>
+        </div>
+        <div class="sidebar-body">
+            <details class="settings-section"><summary>Connection</summary><div class="settings-form">
+<label for="rosbridge-url">Bridge address</label><input id="rosbridge-url" value="ws://localhost:9090">
+<label for="robot-id">Robot ID</label><input id="robot-id" value="hsrb_bot">
+
+
+<div id="http-status" role="status">Checking HTTP server…</div></div>
+</details><details class="settings-section"><summary>Display</summary>
+<label class="toggle-item"><input id="chk-cam" type="checkbox" checked><span>Camera preview</span></label>
+<label class="toggle-item"><input id="chk-logs" type="checkbox"><span>Logs</span></label>
+
+
+<label class="toggle-item"><input type="checkbox" id="light-display"><span>Light display</span></label>
+            </details><details class="settings-section"><summary>Map Options</summary>
+            <div class="settings-form">
+                <label>Map source<select id="map-source"><option value="static">Static PNG</option><option value="topic">ROS topic</option></select></label>
+                <label>Static PNG path<input id="map-png-path" type="text" value="/map.png"></label>
+                <label>Map YAML path<input id="map-yaml-path" type="text" value="/map.yaml"></label>
+                <div class="input-group">
+                    <label for="map-topic">Map Topic</label>
+                    <input type="text" id="map-topic" value="/map" placeholder="/map">
+                </div>
+                <div class="input-group">
+                    <label for="robot-pose-topic">Robot Pose Topic</label>
+                    <input type="text" id="robot-pose-topic" value="/global_pose" placeholder="/global_pose">
+                </div>
+                <div class="input-group">
+                    <label for="plan-topic">Plan Topic</label>
+                    <input type="text" id="plan-topic" value="/plan" placeholder="/plan">
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label for="map-scale">Display Scale (px/m)</label>
+                        <input type="number" id="map-scale" value="64" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="map-rotation">Rotation (deg)</label>
+                        <input type="number" id="map-rotation" value="0" step="1">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label for="map-origin-x">Pan X (px)</label>
+                        <input type="number" id="map-origin-x" value="0" step="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="map-origin-y">Pan Y (px)</label>
+                        <input type="number" id="map-origin-y" value="0" step="1">
+                    </div>
+                </div>
+                <button id="btn-save-map-settings" class="btn btn-secondary btn-block">Apply Map Settings</button>
+            </div>
+
+            </details><details class="settings-section"><summary>Scene Overlay</summary>
+            <div class="settings-form scene-settings">
+                <div class="input-group">
+                    <label for="scene-graph-file">Scene Graph JSON</label>
+                    <input type="text" id="scene-graph-file" value="/scene_graph_complete.json" placeholder="/scene_graph_complete.json">
+                </div>
+                <div class="scene-toggle-grid">
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-furniture-boxes"><span class="toggle-label">Furniture: boxes</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-furniture-nodes"><span class="toggle-label">Furniture: nodes</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-movable-boxes"><span class="toggle-label">Movable objects: boxes</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-movable-nodes"><span class="toggle-label">Movable objects: nodes</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-structural-boxes"><span class="toggle-label">Structural: boxes</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-structural-nodes"><span class="toggle-label">Structural: nodes</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-rooms" checked><span class="toggle-label">Room extents</span></label>
+                    <label class="toggle-item"><input type="checkbox" id="scene-show-visit-poses"><span class="toggle-label">Visitable poses (<span id="scene-visit-pose-count">0</span>)</span></label>
+                </div>
+                <label class="toggle-item inline-toggle">
+                    <input type="checkbox" id="scene-show-labels" checked>
+                    <span class="toggle-label"><i class="fa-solid fa-tag"></i> Show object names</span>
+                </label>
+                <button id="btn-load-scene-graph" class="btn btn-secondary btn-block">Load Scene Overlay</button>
+                <label>Box outline width (px)<input id="scene-outline-width" type="number" min="1" max="10" step="0.5" value="3"></label>
+                <label>Node radius (px)<input id="scene-node-radius" type="number" min="3" max="16" step="1" value="6"></label>
+            </div>
+
+            </details><details class="settings-section"><summary>Camera Options</summary>
+            <div class="settings-form">
+                <div class="input-group">
+                    <label for="camera-topic">Camera Topic</label>
+                    <input type="text" id="camera-topic" value="/remote/head_rgbd_sensor/rgb/image_rect_color" placeholder="/camera/image_raw">
+                </div>
+                <div class="input-group">
+                    <label for="camera-message-type">Message Type</label>
+                    <input type="text" id="camera-message-type" value="sensor_msgs/msg/Image" placeholder="sensor_msgs/msg/CompressedImage">
+                </div>
+                <div class="input-group">
+                    <label for="camera-throttle-ms">Throttle (ms)</label>
+                    <input type="number" id="camera-throttle-ms" value="500" step="50">
+                </div>
+                <button id="btn-save-camera-settings" class="btn btn-secondary btn-block">Apply Camera Settings</button>
+                <label>Result preview duration (seconds)<input id="preview-duration" type="number" min="1" max="30" step="1" value="5"></label>
+                <label>Picture-in-picture scale<input id="camera-window-scale" type="range" min="0.75" max="2" step="0.05" value="1"></label>
+            </div>
+
+            </details><details class="settings-section"><summary>Speech Options</summary>
+            <div class="settings-form speech-settings">
+                <label class="toggle-item"><input type="checkbox" id="speech-interrupt"><span class="toggle-label">Interrupt previous speech</span></label>
+                <div class="input-group">
+                    <label for="speech-rate">Voice Speed <output id="speech-rate-value">1.00x</output></label>
+                    <input type="range" id="speech-rate" min="0.5" max="2" step="0.05" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="speech-pitch">Voice Pitch <output id="speech-pitch-value">1.00</output></label>
+                    <input type="range" id="speech-pitch" min="0.5" max="1.5" step="0.05" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="speech-voice">Voice</label>
+                    <select id="speech-voice">
+                        <option value="">Browser default</option>
+                    </select>
+                </div>
+            </div></details>
+        </div>
+    </div>
+<section id="widget-ctrl" class="command-bar" aria-label="Task and question controls">
+<div id="task-stage" class="task-stage hidden" role="status" aria-live="polite" aria-label="Current task stage"></div>
+<div class="composer-content">
+<div id="cmd-input-container"><label class="sr-only" for="txt-command">Task</label><textarea id="txt-command" rows="2" placeholder="What should the robot do?"></textarea></div>
+<div id="followup-inline-panel" class="hidden"><div id="answer-error" role="alert"></div><div id="followup-prompt" class="prompt-box" role="status"></div><select id="followup-choices" class="hidden" aria-label="Suggested locations"></select><label class="sr-only" for="txt-followup-answer">Your answer</label><textarea id="txt-followup-answer" rows="2" placeholder="Your answer…"></textarea></div>
+<div id="cmd-executing-overlay" class="execution-line hidden"><div id="execution-feedback-panel"><strong id="overlay-title"></strong><span id="overlay-feedback"></span></div></div>
+<div id="current-request" class="hidden"><span class="request-label"></span><span id="current-request-text"></span></div>
+<div id="speech-status" class="hidden"></div><div id="followup-speech-status" class="hidden"></div>
+<span id="action-status-badge" class="badge">Idle</span>
+</div>
+<div class="action-rail">
+<div id="task-buttons"><button id="btn-mic" class="btn btn-secondary" aria-label="Speak task"><i class="fa-solid fa-microphone"></i></button><button id="btn-send-task" class="btn btn-primary">Send</button><button id="btn-cancel-task" class="btn btn-danger hidden">Cancel</button></div>
+<div id="answer-buttons" class="hidden"><button id="btn-followup-mic" class="btn btn-secondary" aria-label="Speak answer"><i class="fa-solid fa-microphone"></i></button><button id="btn-send-followup" class="btn btn-primary">Send</button><button id="btn-cancel-followup" class="btn btn-danger">Cancel</button></div>
+</div></section>
+<main id="workspace">
+<section id="widget-tasks" aria-label="Premade tasks"><div class="tasks-heading"><h2>Tasks</h2><span id="workflow-catalog-status">Connect to receive available workflows</span></div><div id="workflow-cards"></div></section>
+<section id="widget-map" class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-map header-icon"></i> 2D Map & Pose</h2>
+                <span class="pose-coordinates">
+                    X: <span id="pose-x">0.00</span> | Y: <span id="pose-y">0.00</span> | Yaw: <span id="pose-yaw">0.0°</span>
+                </span>
+            </div>
+            <div class="card-body map-body no-pad">
+                <div class="canvas-container">
+                    <canvas id="map-canvas" width="500" height="400"></canvas>
+                    <div id="map-status" class="map-status hidden"></div>
+                    <div id="map-load-state" class="map-load-state hidden" role="status"></div>
+                    <aside id="scene-info" class="scene-info hidden">
+                        <button id="btn-close-scene-info" type="button" title="Close scene information" aria-label="Close scene information">&times;</button>
+                        <div id="scene-info-content"></div>
+                    </aside>
+                    <div class="map-controls"><button id="btn-map-zoom-lock" class="btn btn-icon" title="Lock map zoom" aria-label="Lock map zoom"><i class="fa-solid fa-lock"></i></button>
+                        <button id="btn-refresh-map" class="btn btn-icon btn-dark btn-xs" title="Refresh occupancy map" aria-label="Refresh occupancy map"><i class="fa-solid fa-arrows-rotate"></i></button>
+                        <button id="btn-reset-map" class="btn btn-icon btn-dark btn-xs" title="Reset View"><i class="fa-solid fa-crosshairs"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section><section id="widget-tree" class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-sitemap header-icon"></i> Behaviour Tree</h2>
+                <div class="tree-header-actions"><label for="tree-depth">Depth</label><select id="tree-depth"><option value="1">1</option><option value="2" selected>2</option></select>
+                    <button id="btn-tree-zoom-lock" class="btn btn-icon btn-dark btn-xs" type="button" title="Unlock BT zoom">
+                        <i class="fa-solid fa-lock-open"></i>
+                    </button>
+                    <button id="btn-reset-tree" class="btn btn-icon btn-dark btn-xs" title="Refresh Tree"><i class="fa-solid fa-rotate"></i></button>
+                </div>
+            </div>
+            <div class="card-body tree-body">
+                <div id="tree-container" class="tree-container">
+                    <svg id="tree-svg" width="100%" height="100%"></svg>
+                    <div id="tree-fallback" class="tree-fallback-text">
+                        <span class="tree-placeholder-line" title="Awaiting Behaviour Tree JSON on topic /hsrb_bot/behavior_tree" aria-label="Awaiting Behaviour Tree JSON on topic /hsrb_bot/behavior_tree">Awaiting Behaviour Tree JSON on topic <span id="tree-placeholder-topic">/hsrb_bot/behavior_tree</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+<aside id="widget-cam" class="pip camera-pip" aria-label="Camera preview"><img id="cam-image" hidden alt="Camera preview" draggable="false"><span id="cam-fallback">No camera image</span><span id="cam-status" hidden></span></aside>
+<aside id="tree-details" class="pip leaf-pip" hidden aria-label="Selected node details"></aside>
+</main>
+<section id="widget-logs" class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-terminal header-icon"></i> Terminal Logs</h2>
+                <div class="log-filters">
+                    <button class="btn btn-xs btn-dark active" data-filter="all">All</button>
+                    <button class="btn btn-xs btn-dark text-error" data-filter="error">Error</button>
+                    <button class="btn btn-xs btn-dark text-warning" data-filter="warn">Warn</button>
+                    <button class="btn btn-xs btn-dark text-blue" data-filter="info">Info</button>
+                    <button id="btn-clear-logs" class="btn btn-icon btn-dark btn-xs" title="Clear console"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>
+            <div class="card-body logs-body">
+                <div id="log-console" class="log-console">
+                    <div class="log-line system"><span class="log-time">[00:00:00]</span> [SYSTEM] Awaiting logs from ROS2 topic...</div>
+                </div>
+            </div>
+        </section>
+<script type="module" src="app.js?v=20261108d"></script></body></html>
